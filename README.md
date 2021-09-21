@@ -3,11 +3,11 @@ Python code for downloading and processing LPC data from CCMz
 
 These scripts will automatically download LPC TMs (Telemetry Messages) from the CCMz sftp site, process each individual binary TM file into a correspoding csv file, then create two summary csv files: the LPC_Average.csv file that contains a single line of data that represents the average of all 'good' data from each TM file and the LPC_Master.csv file that contains every record from every TM file. 
 
-**Dependencies**
-The code is written for Python 3.X and requires the following (possibly non standard) modules in addition to those included here: NumPy, Matplotlib, pysftp, gzip, csv
+**Dependencies:**
+  The code is written for Python 3.X and requires the following (possibly non standard) modules in addition to those included here: NumPy, Matplotlib, pysftp, gzip, csv
 
-**Usage**
-The code can be exectuded from either the command line or from an IDE like Spyder.  Before running the following variables in GetLPC need to be updated for the user, file structure and flight/instrument of interest:
+**Usage:**
+  The code can be exectuded from either the command line or from an IDE like Spyder.  Before running the following variables in GetLPC need to be updated for the user, file structure and flight/instrument of interest:
   default_local_target_dir="LPC_Test" # directory where to store mirrored data on your local machine
   LPC_csv_dir = "LPC/csv/" # dir where to put processesed csv files 
   LPC_log_file = "LPC/LPC_Log.txt" #file to save log of XML messages
@@ -25,8 +25,8 @@ On susequent calls, the scipt will only download new TM files that don't exist i
 
 To just reprocess the csv files to the master and average files, add the argument 'reprocess' to call: "python3 GetLPC.py reprocess" or uncomment the reprocess Tre line.
 
-**Visualizing the Data**
-LPC_QuickPlot will provide a quick interactive way of visualizing the LPC data. Update the following lines to reflect the path to your 'average' and 'master' csv files:
+**Visualizing the Data:**
+  LPC_QuickPlot will provide a quick interactive way of visualizing the LPC data. Update the following lines to reflect the path to your 'average' and 'master' csv files:
 #17 LPCcsv = 'LPC/LPC_Mean.csv'
 #24     LPCcsv = 'LPC/LPC_Master.csv'
 
