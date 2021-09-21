@@ -26,26 +26,32 @@ from LPC_Make_Master_CSVs import *
 
 if len(sys.argv) > 1:
     if sys.argv[1] == 'reprocess':
-        reprocess = True;
+        reprocess = True
         print("Reprocessing CSV files")
+    if sys.argv[1] == 'download':
+        download = True
+        print("Downloading without processing")
 
+#Uncomment this line to ONLY reprocess existing csv files
+#reprocess = True
+#Uncomment this line to ONLY download new files without processing
+#download = True
 #https://pysftp.readthedocs.io/en/latest/pysftp.html
 
-# Some constant values
 
+###### Update these values for your user name, flight of interest and local directory structure #########
 default_local_target_dir="LPC_Test" # directory where to store mirrored data on your local machine
 LPC_csv_dir = "LPC/csv/" # dir where to put processesed csv files 
 LPC_log_file = "LPC/LPC_Log.txt" #file to save log of XML messages
 mean_file_name = "LPC/LPC_Mean.csv"
 master_file_name = "LPC/LPC_Master.csv"
+ccmz_user="XXXXXX" # Your login on the CCMz
+ccmz_pass="XXXXXX" # Your password on the CCMz
+my_flights=['ST2_C0_03_TTL3','ST2_C0_05_TTL2'] # Adapt according to your needs
+########################################################################################################
+
 
 ccmz_url="sshstr2.ipsl.polytechnique.fr" # CCMz URL from where to download data
-ccmz_user="XXXXXXXX" # Your login on the CCMz
-ccmz_pass="XXXXXXXX" # Your password on the CCMz
-# ID of flights in which I'm interested in
-my_flights=['ST2_C0_03_TTL3','ST2_C0_05_TTL2'] # Adapt according to your needs
-
-# ID of my instrument
 my_instruments=['LPC'] # Adapt according to your needs
 flight_or_test='Flight'
 tm_or_tc='TM'
@@ -132,7 +138,7 @@ def loop_over_flights_and_instruments():
             ccmz_folder=os.path.join(flight,instrument,flight_or_test,tm_or_tc,raw_or_processed)
             #mirror_ccmz_folder(ccmz_folder)
             new_files = mirror_ccmz_folder(instrument,ccmz_folder, show_individual_file=True)
-            if new_files != None:
+            if new_files != None and download != True:
                 for file in new_files:
                     if file.endswith('.gz'):
                         path = os.path.dirname(file)
