@@ -40,8 +40,8 @@ mean_file_name = "LPC/LPC_Mean.csv"
 master_file_name = "LPC/LPC_Master.csv"
 
 ccmz_url="sshstr2.ipsl.polytechnique.fr" # CCMz URL from where to download data
-ccmz_user="lkalnajs" # Your login on the CCMz
-ccmz_pass="Xm<]5D7j" # Your password on the CCMz
+ccmz_user="XXXXXXXX" # Your login on the CCMz
+ccmz_pass="XXXXXXXX" # Your password on the CCMz
 # ID of flights in which I'm interested in
 my_flights=['ST2_C0_03_TTL3','ST2_C0_05_TTL2'] # Adapt according to your needs
 
