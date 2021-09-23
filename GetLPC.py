@@ -12,7 +12,7 @@ containing every measurement from each TM file, the other containing a single
 average measurement from each TM file.  It also reads the state messages from 
 XML portion of the TM file and appends those to the LPC_State_Log text file.  
 
-This interface uses Python 3.x, pysftp, gzip, csv and readLPCXML modules.
+This interface uses Python 3.x, pysftp, gzip, csv,LPC_Make_Master_CSVs, readLPCXML modules.
 
 """
 
@@ -23,6 +23,9 @@ import pysftp
 import gzip
 from readLPCXML import *
 from LPC_Make_Master_CSVs import *
+
+reprocess = False
+download = False
 
 if len(sys.argv) > 1:
     if sys.argv[1] == 'reprocess':
@@ -45,9 +48,9 @@ LPC_csv_dir = "LPC/csv/" # dir where to put processesed csv files
 LPC_log_file = "LPC/LPC_Log.txt" #file to save log of XML messages
 mean_file_name = "LPC/LPC_Mean.csv"
 master_file_name = "LPC/LPC_Master.csv"
-ccmz_user="XXXXXX" # Your login on the CCMz
-ccmz_pass="XXXXXX" # Your password on the CCMz
-my_flights=['ST2_C0_03_TTL3','ST2_C0_05_TTL2'] # Adapt according to your needs
+ccmz_user="lkalnajs" # Your login on the CCMz
+ccmz_pass="Xm<]5D7j" # Your password on the CCMz
+my_flights=['ST2_C0_03_TTL3','ST2_C1_04_TTL3','ST2_C1_09_TTL2','ST2_C1_19_TTL3'] #All the flights with LPC
 ########################################################################################################
 
 
@@ -139,6 +142,9 @@ def loop_over_flights_and_instruments():
             #mirror_ccmz_folder(ccmz_folder)
             new_files = mirror_ccmz_folder(instrument,ccmz_folder, show_individual_file=True)
             if new_files != None and download != True:
+                if os.path.exists(LPC_csv_dir + flight + '/') == False:
+                    print('Creating Directory: ' + LPC_csv_dir + flight + '/')
+                    os.makedirs(LPC_csv_dir + flight + '/')
                 for file in new_files:
                     if file.endswith('.gz'):
                         path = os.path.dirname(file)
@@ -152,16 +158,16 @@ def loop_over_flights_and_instruments():
                         except:
                             print("Unable to read header from: " + os.path.basename(file))
                         try:
-                            OutputFile = LPC_csv_dir + os.path.splitext(os.path.basename(file))[0]
+                            OutputFile = LPC_csv_dir + flight + '/' + os.path.splitext(os.path.basename(file))[0]
                             OutputFile = os.path.splitext(OutputFile)[0] + '.csv'
-                            #print('Processing to: ' + OutputFile)
+                            print('Processing to: ' + OutputFile)
                             csvFile = parseLCPdatatoCSV(InputFile,OutputFile)
                             #plotLPC(csvFile)
                         except:
                             print('Unable to Process Data From: ' + os.path.basename(file) )
                 
                 
-                master_csv(LPC_csv_dir + "*.csv",mean_file_name,master_file_name)
+                master_csv(LPC_csv_dir + '/' + flight + '/'+  "*.csv",mean_file_name,master_file_name)
                         
 
 def readHeader(InputFile,logFile):    
