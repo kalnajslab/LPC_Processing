@@ -59,26 +59,29 @@ def master_csv(csv_dir,mean_file_name,master_file_name):
     filenames.sort() #sort the list based on filename
     print("Mean File Name: " + mean_file_name)
     #read the header from one of the csv files
-    with open(filenames[1], 'r', newline = '') as csvfile:
-       first = csvfile.readline()
-       second = csvfile.readline()
-       third = csvfile.readline()
-    
-    #copy the 2nd two lines of the header to the mean file
-    with open(mean_file_name, 'w', newline = '') as outfile:
-        outfile.write(second)
-        outfile.write(third)
-    
-    #copy the 2nd two lines of the header to the master file
-    with open(master_file_name, 'w', newline = '') as outfile:
-        outfile.write(second)
-        outfile.write(third)
-    
-    #loop over all the rest of the csv files
-    for filename in filenames:
-        if os.stat(filename).st_size > 0:  #only if it is not zero bytes
-            #print(filename)
-            read_lpc_csv(filename, mean_file_name,master_file_name)
+    if len(filenames)>1:
+        with open(filenames[1], 'r', newline = '') as csvfile:
+           first = csvfile.readline()
+           second = csvfile.readline()
+           third = csvfile.readline()
+        
+        #copy the 2nd two lines of the header to the mean file
+        with open(mean_file_name, 'w', newline = '') as outfile:
+            outfile.write(second)
+            outfile.write(third)
+        
+        #copy the 2nd two lines of the header to the master file
+        with open(master_file_name, 'w', newline = '') as outfile:
+            outfile.write(second)
+            outfile.write(third)
+        
+        #loop over all the rest of the csv files
+        for filename in filenames:
+            if os.stat(filename).st_size > 0:  #only if it is not zero bytes
+                #print(filename)
+                read_lpc_csv(filename, mean_file_name,master_file_name)
+    else:
+        print('No files t process')
 
 def main():
     csv_dir = 'Processed/csv/*.csv'

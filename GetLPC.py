@@ -44,12 +44,13 @@ if len(sys.argv) > 1:
 
 ###### Update these values for your user name, flight of interest and local directory structure #########
 default_local_target_dir="LPC_Test" # directory where to store mirrored data on your local machine
-LPC_csv_dir = "LPC/csv/" # dir where to put processesed csv files 
-LPC_log_file = "LPC/LPC_Log.txt" #file to save log of XML messages
-mean_file_name = "LPC/LPC_Mean.csv"
-master_file_name = "LPC/LPC_Master.csv"
-ccmz_user="lkalnajs" # Your login on the CCMz
-ccmz_pass="Xm<]5D7j" # Your password on the CCMz
+Output_dir = "LPC/" #root dir for processed files
+LPC_csv_dir = "csv/" # subdir where to put processesed csv files 
+LPC_log_file = "LPC_Log.txt" #file to save log of XML messages
+mean_file_name = "_LPC_Mean.csv"
+master_file_name = "_LPC_Master.csv"
+ccmz_user="XXXXXXXXX" # Your login on the CCMz
+ccmz_pass="XXXXXXXXX" # Your password on the CCMz
 my_flights=['ST2_C0_03_TTL3','ST2_C1_04_TTL3','ST2_C1_09_TTL2','ST2_C1_19_TTL3'] #All the flights with LPC
 ########################################################################################################
 
@@ -116,7 +117,7 @@ def mirror_ccmz_folder(instrument, ccmz_folder, local_target_dir=default_local_t
                     #print(ccmz_filename)
                     n_downloads=n_downloads+1
             # Create a ZipFile Object and load sample.zip in it
-                    print (os.path.join(local_folder,ccmz_filename))
+                    #print (os.path.join(local_folder,ccmz_filename))
 
             
           # and print some statistics
@@ -158,7 +159,7 @@ def loop_over_flights_and_instruments():
                         except:
                             print("Unable to read header from: " + os.path.basename(file))
                         try:
-                            OutputFile = LPC_csv_dir + flight + '/' + os.path.splitext(os.path.basename(file))[0]
+                            OutputFile = Output_dir + LPC_csv_dir + flight + '/' + os.path.splitext(os.path.basename(file))[0]
                             OutputFile = os.path.splitext(OutputFile)[0] + '.csv'
                             print('Processing to: ' + OutputFile)
                             csvFile = parseLCPdatatoCSV(InputFile,OutputFile)
@@ -167,7 +168,7 @@ def loop_over_flights_and_instruments():
                             print('Unable to Process Data From: ' + os.path.basename(file) )
                 
                 
-                master_csv(LPC_csv_dir + '/' + flight + '/'+  "*.csv",mean_file_name,master_file_name)
+                master_csv(Output_dir + LPC_csv_dir + '/' + flight + '/'+  "*.csv",Output_dir + flight + mean_file_name, Output_dir + flight + master_file_name)
                         
 
 def readHeader(InputFile,logFile):    
